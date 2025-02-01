@@ -6,6 +6,8 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "./components/ImageModal/ImageModal";
+import Modal from "react-modal";
 
 function App() {
   const [pictures, setPictures] = useState([]);
@@ -13,6 +15,23 @@ function App() {
   const [topic, setTopic] = useState();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [totalPages, setTotalPages] = useState();
+
+  useEffect(() => {
+    Modal.setAppElement("#root");
+  }, []);
+
+  function openModal(image) {
+    setSelectedImage(image);
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+    setSelectedImage(null);
+  }
 
   async function fetchPictures(topic, page) {
     try {
@@ -24,7 +43,7 @@ function App() {
         {
           params: {
             page,
-            per_page: 5,
+            per_page: 15,
             query: topic,
             client_id: "NCcq5dFv_hu6BanaDTQCip7pprCn2rAOKxu2idOWEFI",
           },
@@ -38,7 +57,7 @@ function App() {
           ...response.data.results,
         ]);
       }
-      console.log(response);
+      setTotalPages(response.data.total_pages);
     } catch (error) {
       setError(true);
     } finally {
@@ -63,9 +82,16 @@ function App() {
       />
       {error && <ErrorMessage />}
       {loading && <Loader />}
-      <ImageGallery pictures={pictures} />
-      {pictures.length > 0 && !loading && !error && (
+      <ImageGallery pictures={pictures} onClick={openModal} />
+      {pictures.length > 0 && !loading && !error && page < totalPages && (
         <LoadMoreBtn onClick={() => setPage((prev) => prev + 1)} />
+      )}
+      {modalIsOpen && (
+        <ImageModal
+          isOpen={modalIsOpen}
+          closeModal={closeModal}
+          selectedImage={selectedImage}
+        />
       )}
     </div>
   );

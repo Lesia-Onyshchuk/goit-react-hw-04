@@ -1,10 +1,15 @@
+import toast, { Toaster } from "react-hot-toast";
+
 export default function SearchBar({ onSubmit }) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
     const topic = form.elements.topic.value.trim();
     if (topic === "") {
-      alert("Enter parametrs for search");
+      toast.error("Enter parameters for search!", {
+        duration: 3000,
+        position: "top-right",
+      });
       return;
     }
     onSubmit(topic);
@@ -22,6 +27,7 @@ export default function SearchBar({ onSubmit }) {
         />
         <button type="submit">Search</button>
       </form>
+      <Toaster />
     </header>
   );
 }
