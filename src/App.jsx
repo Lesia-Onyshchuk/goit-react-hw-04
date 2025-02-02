@@ -41,7 +41,6 @@ function App() {
   useEffect(() => {
     async function fetchPictures(topic, page) {
       try {
-        setPictures([]);
         setError(false);
         setLoading(true);
         const response = await axios.get(
