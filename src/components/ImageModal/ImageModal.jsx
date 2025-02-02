@@ -30,7 +30,7 @@ export default function ImageModal({ isOpen, closeModal, selectedImage }) {
         <img
           src={selectedImage.urls.regular}
           alt={selectedImage.alt_description}
-          style={{ width: "100%", height: "620px" }}
+          style={{ width: "1240px", height: "620px" }}
           className={css.modalImage}
         />
         <button onClick={closeModal} className={css.modalBtn}>

@@ -34,50 +34,49 @@ function App() {
     setSelectedImage(null);
   }
 
-  async function fetchPictures(topic, page) {
-    try {
-      setPictures([]);
-      setError(false);
-      setLoading(true);
-      const response = await axios.get(
-        "https://api.unsplash.com/search/photos",
-        {
-          params: {
-            page,
-            per_page: 15,
-            query: topic,
-            client_id: "NCcq5dFv_hu6BanaDTQCip7pprCn2rAOKxu2idOWEFI",
-          },
-        }
-      );
-
-      if (page === 1) {
-        setPictures(response.data.results);
-      } else {
-        setPictures((prevPictures) => [
-          ...prevPictures,
-          ...response.data.results,
-        ]);
-      }
-
-      setPictures(response.data.results);
-
-      setTotalPages(response.data.total_pages);
-
-      if (response.data.results.length === 0) {
-        toast.error("No results. Try again!", {
-          duration: 3000,
-          position: "top-right",
-        });
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    async function fetchPictures(topic, page) {
+      try {
+        setPictures([]);
+        setError(false);
+        setLoading(true);
+        const response = await axios.get(
+          "https://api.unsplash.com/search/photos",
+          {
+            params: {
+              page,
+              per_page: 15,
+              query: topic,
+              client_id: "NCcq5dFv_hu6BanaDTQCip7pprCn2rAOKxu2idOWEFI",
+            },
+          }
+        );
+
+        if (page === 1) {
+          setPictures(response.data.results);
+        } else {
+          setPictures((prevPictures) => [
+            ...prevPictures,
+            ...response.data.results,
+          ]);
+        }
+
+        setPictures(response.data.results);
+
+        setTotalPages(response.data.total_pages);
+
+        if (response.data.results.length === 0) {
+          toast.error("No results. Try again!", {
+            duration: 3000,
+            position: "top-right",
+          });
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
     if (topic) {
       fetchPictures(topic, page);
     }
