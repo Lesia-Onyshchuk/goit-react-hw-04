@@ -1,4 +1,5 @@
 import Modal from "react-modal";
+import css from "./ImageModal.module.css";
 
 export default function ImageModal({ isOpen, closeModal, selectedImage }) {
   const customStyles = {
@@ -22,13 +23,20 @@ export default function ImageModal({ isOpen, closeModal, selectedImage }) {
       style={customStyles}
       overlayClassName="Overlay"
     >
-      <h2>{selectedImage.alt_description || "Image"}</h2>
-      <img
-        src={selectedImage.urls.regular}
-        alt={selectedImage.alt_description}
-        style={{ width: "100%", height: "auto" }}
-      />
-      <button onClick={closeModal}>Close</button>
+      <div className={css.modal}>
+        <h2 className={css.title}>
+          {selectedImage.alt_description || "Image"}
+        </h2>
+        <img
+          src={selectedImage.urls.regular}
+          alt={selectedImage.alt_description}
+          style={{ width: "100%", height: "620px" }}
+          className={css.modalImage}
+        />
+        <button onClick={closeModal} className={css.modalBtn}>
+          Close
+        </button>
+      </div>
     </Modal>
   );
 }

@@ -1,5 +1,4 @@
 import { Bars } from "react-loader-spinner";
-import css from "./Loader.module.css";
 
 export default function Loader() {
   return (
@@ -11,7 +10,6 @@ export default function Loader() {
       wrapperStyle={{}}
       wrapperClass=""
       visible={true}
-      className={css.loader}
     />
   );
 }

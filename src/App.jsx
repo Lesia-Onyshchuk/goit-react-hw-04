@@ -8,6 +8,7 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 import Modal from "react-modal";
+import toast from "react-hot-toast";
 
 function App() {
   const [pictures, setPictures] = useState([]);
@@ -49,6 +50,7 @@ function App() {
           },
         }
       );
+
       if (page === 1) {
         setPictures(response.data.results);
       } else {
@@ -57,7 +59,17 @@ function App() {
           ...response.data.results,
         ]);
       }
+
+      setPictures(response.data.results);
+
       setTotalPages(response.data.total_pages);
+
+      if (response.data.results.length === 0) {
+        toast.error("No results. Try again!", {
+          duration: 3000,
+          position: "top-right",
+        });
+      }
     } catch (error) {
       setError(true);
     } finally {
@@ -72,7 +84,7 @@ function App() {
   }, [topic, page]);
 
   return (
-    <div>
+    <div className="app">
       <SearchBar
         onSubmit={(newTopic) => {
           setTopic(newTopic);
@@ -81,7 +93,11 @@ function App() {
         }}
       />
       {error && <ErrorMessage />}
-      {loading && <Loader />}
+      {loading && (
+        <div className="loader">
+          <Loader />
+        </div>
+      )}
       <ImageGallery pictures={pictures} onClick={openModal} />
       {pictures.length > 0 && !loading && !error && page < totalPages && (
         <LoadMoreBtn onClick={() => setPage((prev) => prev + 1)} />
