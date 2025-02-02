@@ -1,3 +1,5 @@
+import css from "./ImageCard.module.css";
+
 export default function ImageCard({ picture, onClick }) {
   return (
     <div>
@@ -5,6 +7,7 @@ export default function ImageCard({ picture, onClick }) {
         src={picture.urls.small}
         alt={picture.alt_description || "No description"}
         onClick={() => onClick(picture)}
+        className={css.image}
       />
     </div>
   );
