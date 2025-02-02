@@ -34,6 +34,10 @@ function App() {
     setSelectedImage(null);
   }
 
+  function loadMore() {
+    setPage((prev) => prev + 1);
+  }
+
   useEffect(() => {
     async function fetchPictures(topic, page) {
       try {
@@ -60,8 +64,6 @@ function App() {
             ...response.data.results,
           ]);
         }
-
-        setPictures(response.data.results);
 
         setTotalPages(response.data.total_pages);
 
@@ -99,7 +101,7 @@ function App() {
       )}
       <ImageGallery pictures={pictures} onClick={openModal} />
       {pictures.length > 0 && !loading && !error && page < totalPages && (
-        <LoadMoreBtn onClick={() => setPage((prev) => prev + 1)} />
+        <LoadMoreBtn onClick={loadMore} />
       )}
       {modalIsOpen && (
         <ImageModal
